@@ -8,6 +8,7 @@ import { SkillsModule } from './skills/skills.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ExperiencesModule } from './experiences/experiences.module';
 import { GoalsModule } from './goals/goals.module';
+import { InstitutionsModule } from './institutions/institutions.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { GoalsModule } from './goals/goals.module';
     SkillsModule,
     ProjectsModule,
     ExperiencesModule,
-    GoalsModule
+    GoalsModule,
+    InstitutionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

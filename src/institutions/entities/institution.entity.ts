@@ -2,20 +2,14 @@ import { Experience } from "src/experiences/entities/experience.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class Goal {
+export class Institution {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ nullable: false })
-    description: string;
+    @Column({ unique: true, nullable: false })
+    name: string;
 
-    @Column({ nullable: false, default: true })
-    active: boolean;
-
-    @Column({ nullable: false })
-    order: number;
-
-    @OneToMany(() => Experience, (experience) => experience.goals, {
+    @OneToMany(() => Experience, (experience) => experience.institution, {
         cascade: true,
     })
     experiences: Experience[];
@@ -23,6 +17,6 @@ export class Goal {
     @CreateDateColumn()
     created_at: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn() 
     updated_at: Date;
 }
