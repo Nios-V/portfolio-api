@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Skill } from './entities/skill.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class SkillsService {
-  create(createSkillDto: CreateSkillDto) {
-    return 'This action adds a new skill';
+  constructor(
+    @InjectRepository(Skill)
+    private skillsRepository: Repository<Skill>
+  ) {}
+  async create(createSkillDto: CreateSkillDto): Promise<Skill> {
+    const skill = this.skillsRepository.create(createSkillDto);
+    return await this.skillsRepository.save(skill);
   }
 
-  findAll() {
-    return `This action returns all skills`;
+  async findAll(): Promise<Skill[]> {
+    return await this.skillsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} skill`;
+  async findOne(id: string): Promise<Skill | null> {
+    return await this.skillsRepository.findOneBy({ id });
   }
 
-  update(id: number, updateSkillDto: UpdateSkillDto) {
-    return `This action updates a #${id} skill`;
+  async update(id: string, updateSkillDto: UpdateSkillDto): Promise<UpdateResult> {
+    return await this.skillsRepository.update(id, updateSkillDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} skill`;
+  async remove(id: string): Promise<DeleteResult> {
+    return await this.skillsRepository.delete(id);
   }
 }

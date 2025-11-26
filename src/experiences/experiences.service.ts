@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Experience } from './entities/experience.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ExperiencesService {
-  create(createExperienceDto: CreateExperienceDto) {
-    return 'This action adds a new experience';
+  constructor(
+    @InjectRepository(Experience)
+    private experiencesRepository: Repository<Experience>
+  ) {}
+
+  async create(createExperienceDto: CreateExperienceDto): Promise<Experience> {
+    const experience = this.experiencesRepository.create(createExperienceDto);
+    return await this.experiencesRepository.save(experience);
   }
 
-  findAll() {
-    return `This action returns all experiences`;
+  async findAll(): Promise<Experience[]> {
+    return await this.experiencesRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} experience`;
+  async findOne(id: string): Promise<Experience | null> {
+    return await this.experiencesRepository.findOneBy({ id });
   }
 
-  update(id: number, updateExperienceDto: UpdateExperienceDto) {
-    return `This action updates a #${id} experience`;
+  async update(id: string, updateExperienceDto: UpdateExperienceDto): Promise<UpdateResult> {
+    return await this.experiencesRepository.update(id, updateExperienceDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} experience`;
+  async remove(id: string): Promise<DeleteResult> {
+    return await this.experiencesRepository.delete(id);
   }
 }
